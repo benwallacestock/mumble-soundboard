@@ -1,0 +1,10 @@
+export const spacing1 = "4px";
+export const spacing2 = "8px";
+export const spacing3 = "12px";
+export const spacing4 = "16px";
+export const spacing5 = "24px";
+export const spacing6 = "32px";
+export const spacing7 = "48px";
+export const spacing8 = "64px";
+export const spacing9 = "96px";
+export const spacing10 = "128px";

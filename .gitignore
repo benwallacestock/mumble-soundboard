@@ -1,0 +1,6 @@
+/spa/.cache/
+/spa/node_modules/
+/venv/
+/.idea/
+/spa/dist/
+/spa/package-lock.json

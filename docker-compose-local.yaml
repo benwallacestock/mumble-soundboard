@@ -1,0 +1,46 @@
+version: "3.9"
+services:
+  mumble-soundboard:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      # URL used to connect to the database
+      - DATABASE_URL=postgresql://mumble-soundboard-user:testpassword@db:5432/mumble-soundboard
+
+      # Configure the the Mumble connection settings
+      - MUMBLE_BOT_IP=mumble.wallace-stock.co.uk
+      - MUMBLE_BOT_PORT=64738
+      - MUMBLE_BOT_USERNAME=MumbleSoundboard
+
+      # Configure limits on using the soundboard
+      - MUMBLE_BOT_TIMEOUT_SECONDS=5
+      - MAX_SOUND_DURATION=10
+
+      # Default admin password
+      - ADMIN_PASSWORD=adminpassword
+
+      # Key used to sign session cookies
+      - SECRET_KEY=adsokfhjauienkdhyfkjdashjf
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - /c/mumble-soundboard-data/app:/data/
+
+  db:
+    image: postgres:12-alpine
+    volumes:
+      - /c/mumble-soundboard-data/data:/var/lib/postgresql/data/
+    environment:
+      # Setup the postgres database
+      - POSTGRES_USER=mumble-soundboard-user
+      - POSTGRES_PASSWORD=testpassword
+      - POSTGRES_DB=mumble-soundboard
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
